@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using BusinessLayer.Interface;
+using BusinessLayer.Manager;
+using DataAccessLayer;
 
 namespace QuotesC
 {
@@ -41,7 +44,11 @@ namespace QuotesC
                 {
                     // Add framework services.Microsoft.VisualStudio.ExtensionManager.ExtensionManagerService
                     services.AddMvc();
-
+                    services.Configure<Settings>(options => 
+                    {
+                        options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                        options.Database = Configuration.GetSection("MongoConnection:Database").Value;
+                    });
                     if (HasGcpProjectId)
                     {
                         // Enables Stackdriver Trace.
@@ -56,6 +63,13 @@ namespace QuotesC
                             });
                         services.AddSingleton<ILoggerProvider>(sp => GoogleLoggerProvider.Create(GcpProjectId));
                     }
+                    services.AddTransient<IArabicQManager, ArabicManager>();
+                    services.AddTransient<IChineseQManager, ChineseManager>();
+                    services.AddTransient<IEnglishQManager, EnglishManager>();
+                    services.AddTransient<IFrenchQManager, FrenchManager>();
+                    services.AddTransient<IHindiQManager, HindiManager>();
+                    services.AddTransient<ISpanishQManager, SpanishManager>();
+                    services.AddTransient<IUrduQManager, UrduManager>();
                 })
                 .ConfigureLogging(loggingBuilder =>
                 {

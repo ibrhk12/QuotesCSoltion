@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public class Class1
+    public class Settings
     {
+        public string ConnectionString;
+        public string Database;
     }
 }
