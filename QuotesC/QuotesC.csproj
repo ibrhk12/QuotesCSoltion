@@ -19,6 +19,9 @@
     <PackageReference Include="Google.Cloud.Diagnostics.AspNetCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" PrivateAssets="All" />
+    <PackageReference Include="MongoDB.Bson" Version="2.8.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.8.1" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.8.1" />
   </ItemGroup>
 
   <Target Name="NpmInstall" BeforeTargets="Build" Inputs="package.json" Outputs="node_modules">

@@ -3,55 +3,86 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - QuotesC</title>
+    <title>@ViewData["Title"] - Quotes</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/theme-default.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/theme-default.min.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">QuotesC</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
+    <div class="page-container">
+        <div class="page-sidebar">
+
+            <ul class="x-navigation">
+                <li class="xn-logo">
+                    @Html.ActionLink("Quotes", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    <a href="#" class="x-navigation-control"></a>
+                </li>
+                <li class="xn-title">Navigation</li>
+                <li>
+                    <a href="@Url.Action("Index","Home")"><span class="fa fa-desktop"></span> <span class="xn-text">Home</span></a>
+                </li>
+                <li class="xn-openable" id="quotes">
+                    <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Quotes</span></a>
+                    <ul>
+                        <li><a href="@Url.Action("Index","Arabic")"><span class="fa fa-image"></span> Arabic Quotes</a></li>
+                    </ul>
+                </li>
+                <li class="xn-openable">
+                    <a href="@Url.Action("Index","Help")"><span class="fa fa-files-o"></span> <span class="xn-text">Success Stories</span></a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="page-content" style="min-height: 789px;">
+
+            <!-- START X-NAVIGATION VERTICAL -->
+            <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                <!-- TOGGLE NAVIGATION -->
+                <li class="xn-icon-button">
+                    <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                </li>
+                <!-- END TOGGLE NAVIGATION -->
+                <!-- SIGN OUT -->
+                <li class="xn-icon-button pull-right">
+                    <a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
+                </li>
+                <!-- END SIGN OUT -->
+            </ul>
+            <!-- END X-NAVIGATION VERTICAL -->
+            <!-- START BREADCRUMB -->
+            <ul class="breadcrumb">
+                <li><a href="#">Link</a></li>
+                <li class="active">@ViewBag.Title</li>
+            </ul>
+            <div class="content-frame">
+                @RenderBody()
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - QuotesC</p>
-        </footer>
-    </div>
 
     <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="~/js/plugins/jquery/jquery-ui.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/js/plugins/bootstrap/bootstrap.min.js"></script>
+        <script src="~/js/plugins/icheck/icheck.min.js" asp-append-version="true"></script>
+        <script src="~/js/blueimp/jquery.blueimp-gallery.min.js" asp-append-version="true"></script>
+        <script src="~/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js" asp-append-version="true"></script>
+        <script type="text/javascript" src="~/js/settings.js"></script>
+        <script src="~/js/plugins.js" asp-append-version="true"></script>
+        <script src="~/js/actions.js" asp-append-version="true"></script>
+        <script src="~/js/demo_dashboard.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
@@ -59,9 +90,25 @@
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
     @RenderSection("scripts", required: false)
+    <environment>
+        <script>
+            document.getElementById('links').onclick = function (event) {
+                event = event || window.event;
+                var target = event.target || event.srcElement;
+                var link = target.src ? target.parentNode : target;
+                var options = {
+                    index: link, event: event, onclosed: function () {
+                        setTimeout(function () {
+                            $("body").css("overflow", "");
+                        }, 200);
+                    }
+                };
+                var links = this.getElementsByTagName('a');
+                blueimp.Gallery(links, options);
+            };
+        </script>
+    </environment>
 </body>
 </html>

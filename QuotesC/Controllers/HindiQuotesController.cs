@@ -11,6 +11,8 @@ using System.Web.Http;
 
 namespace QuotesC.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class HindiQuotesController : ControllerBase
     {
         private readonly IHindiQManager _hindiQManager;
@@ -19,6 +21,7 @@ namespace QuotesC.Controllers
             _hindiQManager = HQM;
         }
         // GET: api/HindiQuotes
+        [HttpGet("getAll")]
         public async Task<IEnumerable<Hindi>> Get()
         {
             var result = await _hindiQManager.GetAll();
@@ -26,6 +29,7 @@ namespace QuotesC.Controllers
         }
 
         // GET: api/HindiQuotes/5
+        [HttpGet]
         public async Task<ActionResult<Hindi>> Get(string id)
         {
             if (id != null)
@@ -43,6 +47,7 @@ namespace QuotesC.Controllers
         }
 
         // POST: api/HindiQuotes
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody]Hindi value)
         {
             await _hindiQManager.AddQuote(value);
@@ -55,6 +60,7 @@ namespace QuotesC.Controllers
         //}
 
         // DELETE: api/HindiQuotes/5
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             if (id != null)

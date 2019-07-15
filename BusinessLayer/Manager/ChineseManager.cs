@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Interface;
+using DataAccessLayer;
 using DataAccessLayer.Tables;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -13,9 +15,9 @@ namespace BusinessLayer.Manager
     public class ChineseManager : IChineseQManager
     {
         private readonly QuotesDBContext _context;
-        public ChineseManager()
+        public ChineseManager(IOptions<Settings> settings)
         {
-            _context = new QuotesDBContext();
+            _context = new QuotesDBContext(settings);
         }
 
         public async Task AddQuote(Chinese item)

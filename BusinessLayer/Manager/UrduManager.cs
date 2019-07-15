@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using DataAccessLayer;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -13,9 +14,9 @@ namespace BusinessLayer.Manager
     public class UrduManager : IUrduQManager
     {
         private readonly QuotesDBContext _context;
-        public UrduManager()
+        public UrduManager(IOptions<Settings> settings)
         {
-            _context = new QuotesDBContext();
+            _context = new QuotesDBContext(settings);
         }
 
         public async Task AddQuote(Urdu item)

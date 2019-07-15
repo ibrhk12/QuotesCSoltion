@@ -11,6 +11,8 @@ using System.Web.Http;
 
 namespace QuotesC.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class FrenchQuotesController : ControllerBase
     {
         private readonly IFrenchQManager _frenchQManager;
@@ -19,6 +21,7 @@ namespace QuotesC.Controllers
             _frenchQManager = FQM;
         }
         // GET: api/FrenchQuotes
+        [HttpGet("getAll")]
         public async Task<ActionResult<IEnumerable<French>>> Get()
         {
             var result = await _frenchQManager.GetAll();
@@ -28,6 +31,7 @@ namespace QuotesC.Controllers
         }
 
         // GET: api/FrenchQuotes/5
+        [HttpGet]
         public async Task<ActionResult<French>> Get(string id)
         {
             if (id != null)
@@ -45,6 +49,7 @@ namespace QuotesC.Controllers
         }
 
         // POST: api/FrenchQuotes
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody]French value)
         {
             await _frenchQManager.AddQuote(value);
@@ -57,6 +62,7 @@ namespace QuotesC.Controllers
         //}
 
         // DELETE: api/FrenchQuotes/5
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             if (id != null)

@@ -8,17 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace BusinessLayer
 {
     public class QuotesDBContext
     {
         private readonly IMongoDatabase _database = null;
-        public QuotesDBContext()
+        public QuotesDBContext(IOptions<Settings> settings)
         {
-            var client = new MongoClient("mongodb+srv://ibrhk92:admin@cluster0-dnalb.mongodb.net/testQuotes?retryWrites=true");
+            var client = new MongoClient(settings.Value.ConnectionString);
             if (client != null)
-                _database = client.GetDatabase("testQuotes");
+                _database = client.GetDatabase(settings.Value.Database);
         }
         //Arabic Quotes Table
         public IMongoCollection<Arabic> Arabic

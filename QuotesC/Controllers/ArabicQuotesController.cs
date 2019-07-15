@@ -12,6 +12,8 @@ using System.Web.Http;
 
 namespace QuotesC.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ArabicQuotesController : ControllerBase
     {
         private readonly IArabicQManager _arabicQManager;
@@ -20,6 +22,7 @@ namespace QuotesC.Controllers
             _arabicQManager = AQM;
         }
         // GET api/values
+        [HttpGet("getAll")]
         public async Task<ActionResult<IEnumerable<Arabic>>> Get()
         {
             var result = await _arabicQManager.GetAll();
@@ -29,6 +32,7 @@ namespace QuotesC.Controllers
         }
 
         // GET api/values/5
+        [HttpGet]
         public async Task<ActionResult<Arabic>> Get(string id)
         {
             if (id != null)
@@ -44,6 +48,7 @@ namespace QuotesC.Controllers
 
         // POST api/values
         //Create
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody]Arabic value)
         {
             await _arabicQManager.AddQuote(value);
@@ -56,6 +61,7 @@ namespace QuotesC.Controllers
         //}
 
         // DELETE api/values/5
+        [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
             if (id != null)

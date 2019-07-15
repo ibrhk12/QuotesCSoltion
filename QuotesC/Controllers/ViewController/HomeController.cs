@@ -18,6 +18,7 @@ namespace QuotesC.Controllers
             // Sends a message to configured loggers, including the Stackdriver logger.
             // The Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker logger will log all controller actions with
             // log level information. This log is for additional information.
+            ViewBag.Title = "Home Page";
             _logger.LogInformation("Home page hit!");
             return View();
         }
