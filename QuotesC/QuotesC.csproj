@@ -49,4 +49,10 @@
     <Folder Include="wwwroot\js\plugins\fileinput\fileinput\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Shared\_Layout FormWidgets.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

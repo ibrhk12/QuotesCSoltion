@@ -77,9 +77,7 @@
                 <li><a href="#">Link</a></li>
                 <li class="active">@ViewBag.Title</li>
             </ul>
-            <div class="content-frame">
-                @RenderBody()
-            </div>
+            @RenderBody()
         </div>
     </div>
 
@@ -109,20 +107,40 @@
     @RenderSection("scripts", required: false)
     <environment>
         <script>
-            document.getElementById('links').onclick = function (event) {
-                event = event || window.event;
-                var target = event.target || event.srcElement;
-                var link = target.src ? target.parentNode : target;
-                var options = {
-                    index: link, event: event, onclosed: function () {
-                        setTimeout(function () {
-                            $("body").css("overflow", "");
-                        }, 200);
-                    }
-                };
-                var links = this.getElementsByTagName('a');
-                blueimp.Gallery(links, options);
-            };
+            $(function () {
+                $("#file-simple").fileinput({
+                    showUpload: false,
+                    showCaption: false,
+                    browseClass: "btn btn-danger",
+                    fileType: "any"
+                });
+            });
+            $(document).ready(function () {
+                if (window.location.href.indexOf("Create") > -1) {
+                    //alert("in create");
+                    var jvalidate = $("#jvalidate").validate({
+                        ignore: [],
+                        rules: {
+                            image: {
+                                required: true
+                            },
+                            imageName: {
+                                required: true
+                            },
+                            Quote: {
+                                required: true
+                            }
+                        },
+                        messages: {
+                            image: "Please Upload Your Image",
+                            imageName: "Please Enter Your Image Name",
+                            Quote: "Please Fill this Field"
+                        },
+                        errorElement: 'div',
+                        errorLabelContainer: '#errorMessage'
+                    });
+                }
+            });
         </script>
     </environment>
 </body>

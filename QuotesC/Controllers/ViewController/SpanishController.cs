@@ -1,18 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QuotesC.Helper;
+using QuotesC.ViewModel;
 
 namespace QuotesC.Controllers.ViewController
 {
     public class SpanishController : Controller
     {
         // GET: Spanish
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            IEnumerable<SpanishVM> spanishQuotes = null;
+            try
+            {
+                APIHelper _api = new APIHelper();
+                using (HttpClient client = _api.initial())
+                {
+                    using (HttpResponseMessage response = await client.GetAsync("spanishquotes/getAll"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            using (HttpContent content = response.Content)
+                            {
+                                spanishQuotes = await content.ReadAsAsync<IEnumerable<SpanishVM>>();
+                            }
+                        }
+                    }
+                }
+                if (spanishQuotes == null)
+                    return RedirectToAction("Index", "Home");
+                return View(spanishQuotes);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Spanish/Details/5

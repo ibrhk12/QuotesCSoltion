@@ -1,18 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using DataAccessLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using QuotesC.Helper;
+using QuotesC.ViewModel;
 
 namespace QuotesC.Controllers.ViewController
 {
     public class ArabicController : Controller
     {
         // GET: Arabic
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            IEnumerable<ArabicVM> arabicQuotes = null;
+            try
+            {
+                APIHelper _api = new APIHelper();
+                using (HttpClient client = _api.initial())
+                {
+                    using (HttpResponseMessage response = await client.GetAsync("arabicquotes/getAll"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            using(HttpContent content =  response.Content)
+                            {
+                                arabicQuotes = await content.ReadAsAsync<IEnumerable<ArabicVM>>();
+                            }
+                        }
+                    }
+                }
+                if(arabicQuotes == null)
+                    return RedirectToAction("Index", "Home");
+                return View(arabicQuotes);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index","Home");
+            }
         }
 
         // GET: Arabic/Details/5

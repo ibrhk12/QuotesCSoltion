@@ -1,18 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QuotesC.Helper;
+using QuotesC.ViewModel;
 
 namespace QuotesC.Controllers.ViewController
 {
     public class UrduController : Controller
     {
         // GET: Urdu
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            IEnumerable<UrduVM> urduQuotes = null;
+            try
+            {
+                APIHelper _api = new APIHelper();
+                using (HttpClient client = _api.initial())
+                {
+                    using (HttpResponseMessage response = await client.GetAsync("urduquotes/getAll"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            using (HttpContent content = response.Content)
+                            {
+                                urduQuotes = await content.ReadAsAsync<IEnumerable<UrduVM>>();
+                            }
+                        }
+                    }
+                }
+                if (urduQuotes == null)
+                    return RedirectToAction("Index", "Home");
+                return View(urduQuotes);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Urdu/Details/5

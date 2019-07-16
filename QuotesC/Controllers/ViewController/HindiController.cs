@@ -1,18 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QuotesC.Helper;
+using QuotesC.ViewModel;
 
 namespace QuotesC.Controllers.ViewController
 {
     public class HindiController : Controller
     {
         // GET: Hindi
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            IEnumerable<HindiVM> hindiQuotes = null;
+            try
+            {
+                APIHelper _api = new APIHelper();
+                using (HttpClient client = _api.initial())
+                {
+                    using (HttpResponseMessage response = await client.GetAsync("hindiquotes/getAll"))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            using (HttpContent content = response.Content)
+                            {
+                                hindiQuotes = await content.ReadAsAsync<IEnumerable<HindiVM>>();
+                            }
+                        }
+                    }
+                }
+                if (hindiQuotes == null)
+                    return RedirectToAction("Index", "Home");
+                return View(hindiQuotes);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Hindi/Details/5
