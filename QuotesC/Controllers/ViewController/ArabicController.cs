@@ -14,13 +14,18 @@ namespace QuotesC.Controllers.ViewController
 {
     public class ArabicController : Controller
     {
+        APIHelper _api;
+        public ArabicController()
+        {
+            _api = new APIHelper();
+        }
         // GET: Arabic
         public async Task<ActionResult> Index()
         {
             IEnumerable<ArabicVM> arabicQuotes = null;
             try
             {
-                APIHelper _api = new APIHelper();
+                
                 using (HttpClient client = _api.initial())
                 {
                     using (HttpResponseMessage response = await client.GetAsync("arabicquotes/getAll"))

@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Shared\_Layout FormWidgets.cshtml">
+    <Content Update="Views\Shared\_LayoutFormWidgets.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
