@@ -63,18 +63,45 @@ namespace QuotesC.Controllers.ViewController
 
         // POST: Arabic/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ArabicVM model)
         {
             try
             {
                 // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                if (model.Quote != null)
+                {
+                    //save the image
+                    //_blobStorageServices = new BlobStorageServices();
+                    //model.imageUrl = ImageUpload(model.image);
+                    model.imageUrl = "https://i5.walmartimages.ca/images/Large/428/5_r/6000195494285_R.jpg";
+                    //call the API Post
+                    Arabic arabic = new Arabic()
+                    {
+                        imageName = model.imageName,
+                        imageUrl = model.imageUrl,
+                        Quote = model.Quote
+                    };
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("http://localhost:61878/api/arabicquotes");
+                        using (var postTask = client.PostAsJsonAsync<Arabic>("arabicquotes", arabic))
+                        {
+                            postTask.Wait();
+                            var result = postTask.Result;
+                            if (result.IsSuccessStatusCode)
+                            {
+                                return RedirectToAction("Index");
+                            }
+                        }
+                    }
+                }
+                return View(model);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                //ViewBag.Exception = ex.Message;
+                //return View(model);
+                throw ex;
             }
         }
 
