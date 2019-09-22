@@ -7,7 +7,7 @@
     <PackageId>QuotesC</PackageId>
     <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
